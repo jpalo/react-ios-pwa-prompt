@@ -23,7 +23,7 @@ const PWAPrompt = ({
     if (delay) {
       setTimeout(() => {
         // Prevent keyboard appearing over the prompt if a text input has autofocus set
-        if (document.activeElement) {
+        if (typeof document !== 'undefined' && document.activeElement) {
           document.activeElement.blur();
         }
 
@@ -33,7 +33,7 @@ const PWAPrompt = ({
   }, []);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && typeof document !== 'undefined') {
       document.body.classList.add(styles.noScroll);
     }
   }, [isVisible]);
@@ -43,6 +43,8 @@ const PWAPrompt = ({
   const iOSClass = isiOS13AndUp ? styles.modern : "legacy";
 
   const dismissPrompt = (evt) => {
+    if(typeof document === 'undefined') return;
+
     document.body.classList.remove(styles.noScroll);
     setVisibility(false);
 

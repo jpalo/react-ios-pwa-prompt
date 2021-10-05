@@ -3,6 +3,8 @@ import React from "react";
 import PWAPrompt from "./components/PWAPrompt";
 
 const deviceCheck = () => {
+  if(typeof window === 'undefined') return;
+  
   const isiOS = /iphone|ipad|ipod/.test(
     window.navigator.userAgent.toLowerCase()
   );
@@ -11,7 +13,9 @@ const deviceCheck = () => {
   const isStandalone =
     "standalone" in window.navigator && window.navigator.standalone;
 
-  return (isiOS || isiPadOS) && !isStandalone;
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+  return (isiOS || isiPadOS) && !isStandalone && isSafari;
 };
 
 export default ({
@@ -25,7 +29,7 @@ export default ({
   copyClosePrompt = "Cancel",
   delay = 1000,
   debug = false,
-  onClose = () => {},
+  onClose = () => { },
 }) => {
   let promptData = JSON.parse(localStorage.getItem("iosPwaPrompt"));
 
